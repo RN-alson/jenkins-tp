@@ -60,8 +60,7 @@ URL   : ${env.BUILD_URL}
 
 Consultez les logs pour plus de détails.
                 """,
-                to: 'randriamampiadanaalsoncedrick@gmail.com',
-                credentialsId: 'gmail-smtp'
+                to: 'randriamampiadanaalsoncedrick@gmail.com'
             )
         }
     }
