@@ -5,6 +5,10 @@ pipeline {
         maven 'maven'
     }
 
+    triggers {
+        githubPush()
+    }
+
     stages {
         stage('Checkout') {
             steps {
