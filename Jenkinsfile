@@ -1,25 +1,47 @@
 pipeline {
     agent any
+
     stages {
-        stage('Clone') {
+        stage('Checkout') {
             steps {
-                echo 'Repo cloné avec succès'
+                echo 'Code récupéré depuis GitHub'
             }
         }
+
         stage('Build') {
             steps {
-                sh 'echo "Build OK"'
+                sh 'mvn clean package -DskipTests'
             }
         }
-        stage('Test') {
+
+        stage('Tests') {
             steps {
-                sh 'echo "Tests OK"'
+                sh 'mvn test'
             }
         }
-        stage('Deploy') {
+
+        stage('Build Docker Image') {
             steps {
-                sh 'echo "Deploy OK"'
+                sh 'docker build -t alson2410/monapp:1.0.0 .'
             }
+        }
+
+        stage('Push DockerHub') {
+            steps {
+                withCredentials([string(credentialsId: 'dockerhub-pass', variable: 'DOCKER_PASS')]) {
+                    sh 'docker login -u alson2410 -p $DOCKER_PASS'
+                    sh 'docker push alson2410/monapp:1.0.0'
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Pipeline terminé avec succès !'
+        }
+        failure {
+            echo 'Pipeline échoué.'
         }
     }
 }
