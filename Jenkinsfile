@@ -50,6 +50,19 @@ pipeline {
         }
         failure {
             echo 'Pipeline échoué.'
+            emailext(
+                subject: "ÉCHEC Pipeline: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                body: """
+Le pipeline ${env.JOB_NAME} a échoué.
+
+Build : #${env.BUILD_NUMBER}
+URL   : ${env.BUILD_URL}
+
+Consultez les logs pour plus de détails.
+                """,
+                to: 'randriamampiadanaalsoncedrick@gmail.com',
+                credentialsId: 'gmail-smtp'
+            )
         }
     }
 }
