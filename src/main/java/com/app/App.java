@@ -6,6 +6,6 @@ public class App {
     }
 
     public static void main(String[] args) {
-        System.out.println(saluer("Jenkins CI/CD"));
+        System.out.println(saluer("Jenkins CI/CD + Webhook"));
     }
 }
