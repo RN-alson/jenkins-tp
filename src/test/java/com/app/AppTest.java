@@ -6,7 +6,7 @@ import static org.junit.Assert.*;
 public class AppTest {
     @Test
     public void testSaluer() {
-        assertEquals("MAUVAISE VALEUR", App.saluer("Jenkins CI/CD"));
+        assertEquals("Bonjour, Jenkins CI/CD !", App.saluer("Jenkins CI/CD"));
     }
 
     @Test

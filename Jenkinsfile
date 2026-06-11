@@ -46,21 +46,27 @@ pipeline {
 
     post {
         success {
-            echo 'Pipeline terminé avec succès !'
+            echo 'Pipeline termine avec succes !'
+            emailext(
+                subject: "OK Pipeline: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                body: "Le pipeline ${env.JOB_NAME} s'est termine avec succes.\n\nBuild : #${env.BUILD_NUMBER}\nURL   : ${env.BUILD_URL}",
+                to: 'randriamampiadanaalsoncedrick@gmail.com',
+                from: 'randriamampiadanaalsoncedrick@gmail.com',
+                replyTo: 'randriamampiadanaalsoncedrick@gmail.com',
+                mimeType: 'text/plain',
+                recipientProviders: []
+            )
         }
         failure {
-            echo 'Pipeline échoué.'
+            echo 'Pipeline echoue.'
             emailext(
-                subject: "ÉCHEC Pipeline: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-                body: """
-Le pipeline ${env.JOB_NAME} a échoué.
-
-Build : #${env.BUILD_NUMBER}
-URL   : ${env.BUILD_URL}
-
-Consultez les logs pour plus de détails.
-                """,
-                to: 'randriamampiadanaalsoncedrick@gmail.com'
+                subject: "ECHEC Pipeline: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                body: "Le pipeline ${env.JOB_NAME} a echoue.\n\nBuild : #${env.BUILD_NUMBER}\nURL   : ${env.BUILD_URL}\n\nConsultez les logs pour plus de details.",
+                to: 'randriamampiadanaalsoncedrick@gmail.com',
+                from: 'randriamampiadanaalsoncedrick@gmail.com',
+                replyTo: 'randriamampiadanaalsoncedrick@gmail.com',
+                mimeType: 'text/plain',
+                recipientProviders: []
             )
         }
     }
