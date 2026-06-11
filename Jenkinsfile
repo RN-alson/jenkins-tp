@@ -30,7 +30,7 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t alson2410/monapp:1.0.0 .'
+                sh 'docker build -t alson2410/monapp:latest -t alson2410/monapp:${BUILD_NUMBER} .'
             }
         }
 
@@ -38,8 +38,17 @@ pipeline {
             steps {
                 withCredentials([string(credentialsId: 'dockerhub-pass', variable: 'DOCKER_PASS')]) {
                     sh 'docker login -u alson2410 -p $DOCKER_PASS'
-                    sh 'docker push alson2410/monapp:1.0.0'
+                    sh 'docker push alson2410/monapp:latest'
+                    sh 'docker push alson2410/monapp:${BUILD_NUMBER}'
                 }
+            }
+        }
+
+        stage('Deploy to Kubernetes') {
+            steps {
+                sh 'kubectl apply -f k8s/'
+                sh 'kubectl rollout status deployment/monapp --timeout=60s'
+                sh 'kubectl get pods -l app=monapp'
             }
         }
     }
